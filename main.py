@@ -1,15 +1,16 @@
-from ast import While
+# from ast import While
 from sys import argv
 import datetime
 
-def check_name():
-    global name
+def check_user_name():
+    global user_name
     try:
         # print(f"Welcome {argv[1].capitalize()}")
-        name = argv[1]
+        user_name = argv[1]
     except:
-        name = input("\nEnter your name: ")
-    print(f"Welcome {name.capitalize()}!")
+        user_name = input("\nEnter your name: ")
+    user_name = user_name.strip().capitalize()
+    print(f"Welcome {user_name}!")
 
 
 
@@ -17,17 +18,23 @@ def check_name():
 def log_take():
     global log_duration
     global log_note
-    log_duration = int(input("Enter the time you want to log(in minutes): "))
+    while True:
+        log_duration = int(input("Enter the time you want to log(in minutes): "))
+        if isinstance(log_duration, int):
+            break
+        else:
+            continue
     # Asking the note the user wants to log
     log_note = input("Enter the note you want to log: \n ")
+    log_note = log_note.strip()
     # Let the user preview the message he/she wrote previously
-    print(f"\nHello {name} Your note(log) is \n{log_note}")
+    print(f"\nHello {user_name} Your note(log) is \n{log_note}.")
 
 
 
 def save_log():
     my_file = open("test_file.txt", "a+")
-    my_file.write(f"\n{name}'s {log_duration} minutes' log note is - {log_note}. ")
+    my_file.write(f"\n{user_name}'s {log_duration} minutes log note is - {log_note}. ")
     my_file.close()
 
 def see_log():
@@ -38,23 +45,26 @@ def see_log():
 
 if __name__ == "__main__":
     print(f"Today is {datetime.datetime.now()}")  # Returns Current time (exact)
-    check_name()
-    # Ask what the user wants to do?
+    check_user_name()
     while True:
-        print("\nIf you want to write down your logs with notes press 1\nIf you want to see your logs with notes press 2")
+        # Ask what the user wants to do?
+        print("\nIf you want to write down your logs with notes press 1\nIf you want to see your logs with notes press 2 \nPress 0 to exit.")
         choice = int(input("Enter What you want to do: "))
         if choice == 1:
             log_take() #To take the log note
             save_log()
         elif choice == 2:
-            # print("Printing the whole .txt file here using r+ readlines")
-            see_log()
+            # Printing the whole .txt file here using  read func
+            see_log()        
+        elif choice == 0:
+            # Printing the whole .txt file here using  read func
+            print("Thank you for using this tool. Hope you've enjoyed this.")
+            exit(1)
         else:
             print("Invalid input!!")
+            print("Thank you for using this tool. Hope you've enjoyed this.")
             exit(1)
-            break
 
-    print("Thank you for using this tool. Hope you've enjoyed this.")
 
 
 
